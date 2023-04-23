@@ -2,14 +2,24 @@ package fi.arcada.projekt_chi2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
 
     // Deklarera 4 Button-objekt
     Button btn1, btn2, btn3, btn4;
+    // Column/row names and ID
+    DataTableAxis row1, row2, col1, col2;
+    DataTableAxis[] tableAxes;
     // Deklarera 4 heltalsvariabler för knapparnas värden
     int val1, val2, val3, val4;
 
@@ -25,7 +35,35 @@ public class MainActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
 
+        row1 = new DataTableAxis();
+        row1.name = "Row 1";
+        row1.id = R.id.textViewRow1;
 
+        row2 = new DataTableAxis();
+        row2.name = "Row 2";
+        row2.id = R.id.textViewRow2;
+
+        col1 = new DataTableAxis();
+        col1.name = "Column 1";
+        col1.id = R.id.textViewCol1;
+
+        col2 = new DataTableAxis();
+        col2.name = "Column 2";
+        col2.id = R.id.textViewCol2;
+
+        tableAxes = new DataTableAxis[]{row1, row2, col1, col2};
+
+        final TextView row1_name = (TextView) findViewById(row1.id);
+        row1_name.setText(row1.name);
+
+        final TextView row2_name = (TextView) findViewById(row2.id);
+        row2_name.setText(row2.name);
+
+        final TextView col1_name = (TextView) findViewById(col1.id);
+        col1_name.setText(col1.name);
+
+        final TextView col2_name = (TextView) findViewById(col2.id);
+        col2_name.setText(col2.name);
     }
 
     /**
@@ -46,6 +84,66 @@ public class MainActivity extends AppCompatActivity {
         // Slutligen, kör metoden som ska räkna ut allt!
         calculate();
     }
+
+    public void editDataAxis(View view) {
+        // Create local axis object
+        DataTableAxis axis = new DataTableAxis();
+        axis.id = view.getId();
+        final TextView axis_name = (TextView) findViewById(axis.id);
+        axis.name = axis_name.getText().toString();
+
+        // Set dialog view
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        // Inflate the dialog_edit_text.xml layout file
+        View dialogView = inflater.inflate(R.layout.dialog_edit_text, null);
+        builder.setView(dialogView);
+
+        final EditText input = dialogView.findViewById(R.id.dialog_edit_text);
+        input.setText(axis.name);
+
+
+        final AlertDialog dialog = builder.create();
+
+        View cancelButton = (Button) dialogView.findViewById(R.id.buttonCancelDialog);
+        View saveButton = (Button) dialogView.findViewById(R.id.buttonSaveAxisName);
+
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+
+
+        DataTableAxis finalAxis = axis;
+        if (saveButton != null) {
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Update global tableAxes array
+                    finalAxis.name = input.getText().toString();
+                    for (int i = 0; i < tableAxes.length; i++) {
+                        if (tableAxes[i].id == finalAxis.id) {
+                            tableAxes[i].name = finalAxis.name;
+                            axis_name.setText(finalAxis.name);
+                            dialog.dismiss();
+                            break;
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            });
+        }
+
+
+        dialog.show();
+    }
+
 
     /**
      * Metod som uppdaterar layouten och räknar ut själva analysen.
