@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     DataTableAxis[] tableAxes;
     // Deklarera 4 heltalsvariabler för knapparnas värden
     int val1, val2, val3, val4;
+
+    TextView row1_table, row2_table, col1_table, col2_table, row1_percent, col1_percent, col2_percent;
 
 
     @Override
@@ -53,17 +57,26 @@ public class MainActivity extends AppCompatActivity {
 
         tableAxes = new DataTableAxis[]{row1, row2, col1, col2};
 
-        final TextView row1_name = (TextView) findViewById(row1.id);
-        row1_name.setText(row1.name);
+        row1_table = findViewById(row1.id);
+        row1_table.setText(row1.name);
 
-        final TextView row2_name = (TextView) findViewById(row2.id);
-        row2_name.setText(row2.name);
+        row2_table = findViewById(row2.id);
+        row2_table.setText(row2.name);
 
-        final TextView col1_name = (TextView) findViewById(col1.id);
-        col1_name.setText(col1.name);
+        col1_table = findViewById(col1.id);
+        col1_table.setText(col1.name);
 
-        final TextView col2_name = (TextView) findViewById(col2.id);
-        col2_name.setText(col2.name);
+        col2_table = findViewById(col2.id);
+        col2_table.setText(col2.name);
+
+        row1_percent = findViewById(R.id.percentRow1);
+        row1_percent.setText(row1.name);
+
+        col1_percent = findViewById(R.id.percentCol1);
+        col1_percent.setText(col1.name);
+
+        col2_percent = findViewById(R.id.percentCol2);
+        col2_percent.setText(col2.name);
     }
 
     /**
@@ -127,10 +140,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     // Update global tableAxes array
                     finalAxis.name = input.getText().toString();
-                    for (int i = 0; i < tableAxes.length; i++) {
-                        if (tableAxes[i].id == finalAxis.id) {
-                            tableAxes[i].name = finalAxis.name;
-                            axis_name.setText(finalAxis.name);
+                    for (DataTableAxis tableAx : tableAxes) {
+                        if (tableAx.id == finalAxis.id) {
+                            tableAx.name = finalAxis.name;
+
+                            updateAxisName();
+
                             dialog.dismiss();
                             break;
                         }
@@ -144,6 +159,17 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void updateAxisName() {
+        row1_table.setText(row1.name);
+        row2_table.setText(row2.name);
+        col1_table.setText(col1.name);
+        col2_table.setText(col2.name);
+
+        row1_percent.setText(row1.name);
+
+        col1_percent.setText(col1.name);
+        col2_percent.setText(col2.name);
+    }
 
     /**
      * Metod som uppdaterar layouten och räknar ut själva analysen.
