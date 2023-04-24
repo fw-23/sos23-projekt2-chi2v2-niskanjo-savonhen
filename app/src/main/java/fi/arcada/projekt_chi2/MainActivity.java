@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor prefEditor;
     // Deklarera 4 Button-objekt
     Button btn1, btn2, btn3, btn4;
     // Column/row names and ID
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefEditor = sharedPref.edit();
+
         // Koppla samman Button-objekten med knapparna i layouten
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
@@ -40,19 +47,19 @@ public class MainActivity extends AppCompatActivity {
         btn4 = findViewById(R.id.button4);
 
         row1 = new DataTableAxis();
-        row1.name = "Row 1";
+        row1.name = sharedPref.getString("row1_name", "Row 1");
         row1.id = R.id.textViewRow1;
 
         row2 = new DataTableAxis();
-        row2.name = "Row 2";
+        row2.name = sharedPref.getString("row2_name", "Row 2");
         row2.id = R.id.textViewRow2;
 
         col1 = new DataTableAxis();
-        col1.name = "Column 1";
+        col1.name = sharedPref.getString("col1_name", "Column 1");
         col1.id = R.id.textViewCol1;
 
         col2 = new DataTableAxis();
-        col2.name = "Column 2";
+        col2.name = sharedPref.getString("col2_name","Column 2");
         col2.id = R.id.textViewCol2;
 
         tableAxes = new DataTableAxis[]{row1, row2, col1, col2};
@@ -89,10 +96,22 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button) view;
 
         // Kontrollera vilken knapp som klickats, öka värde på rätt vaiabel
-        if (view.getId() == R.id.button1) val1++;
-        if (view.getId() == R.id.button2) val2++;
-        if (view.getId() == R.id.button3) val3++;
-        if (view.getId() == R.id.button4) val4++;
+        if (view.getId() == R.id.button1) {
+            val1++;
+            prefEditor.putInt("val1", val1);
+        }
+        if (view.getId() == R.id.button2) {
+            val2++;
+            prefEditor.putInt("val2", val2);
+        }
+        if (view.getId() == R.id.button3) {
+            val3++;
+            prefEditor.putInt("val3", val3);
+        }
+        if (view.getId() == R.id.button4) {
+            val4++;
+            prefEditor.putInt("val4", val4);
+        }
 
         // Slutligen, kör metoden som ska räkna ut allt!
         calculate();
@@ -169,6 +188,16 @@ public class MainActivity extends AppCompatActivity {
 
         col1_percent.setText(col1.name);
         col2_percent.setText(col2.name);
+
+        prefEditor.putString("row1_name", row1.name);
+        prefEditor.putString("row2_name", row2.name);
+        prefEditor.putString("col1_name", col1.name);
+        prefEditor.putString("col2_name", col2.name);
+    }
+
+    public void openSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     /**

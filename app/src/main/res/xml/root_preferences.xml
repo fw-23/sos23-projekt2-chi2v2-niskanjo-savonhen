@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Settings">
+
+        <EditTextPreference
+            app:key="row1_name"
+            app:title="Row 1"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="row2_name"
+            app:title="Row 2"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="col1_name"
+            app:title="Column 1"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="col2_name"
+            app:title="Column 2"
+            app:useSimpleSummaryProvider="true" />
+
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
