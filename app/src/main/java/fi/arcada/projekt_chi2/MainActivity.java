@@ -46,20 +46,29 @@ public class MainActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
 
+        val1 = sharedPref.getInt("val1", 0);
+        val2 = sharedPref.getInt("val2", 0);
+        val3 = sharedPref.getInt("val3", 0);
+        val4 = sharedPref.getInt("val4", 0);
+
         row1 = new DataTableAxis();
-        row1.name = sharedPref.getString("row1_name", "Row 1");
+        row1.key = "row1_name";
+        row1.name = sharedPref.getString(row1.key, "Row 1");
         row1.id = R.id.textViewRow1;
 
         row2 = new DataTableAxis();
-        row2.name = sharedPref.getString("row2_name", "Row 2");
+        row2.key = "row2_name";
+        row2.name = sharedPref.getString(row2.key, "Row 2");
         row2.id = R.id.textViewRow2;
 
         col1 = new DataTableAxis();
-        col1.name = sharedPref.getString("col1_name", "Column 1");
+        col1.key = "col1_name";
+        col1.name = sharedPref.getString(col1.key, "Column 1");
         col1.id = R.id.textViewCol1;
 
         col2 = new DataTableAxis();
-        col2.name = sharedPref.getString("col2_name","Column 2");
+        col2.key = "col2_name";
+        col2.name = sharedPref.getString(col2.key,"Column 2");
         col2.id = R.id.textViewCol2;
 
         tableAxes = new DataTableAxis[]{row1, row2, col1, col2};
@@ -84,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
         col2_percent = findViewById(R.id.percentCol2);
         col2_percent.setText(col2.name);
+
+        btn1.setText(String.valueOf(val1));
+        btn2.setText(String.valueOf(val2));
+        btn3.setText(String.valueOf(val3));
+        btn4.setText(String.valueOf(val4));
+
     }
 
     /**
@@ -113,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             prefEditor.putInt("val4", val4);
         }
 
+        prefEditor.apply();
         // Slutligen, kör metoden som ska räkna ut allt!
         calculate();
     }
@@ -162,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
                     for (DataTableAxis tableAx : tableAxes) {
                         if (tableAx.id == finalAxis.id) {
                             tableAx.name = finalAxis.name;
-
+                            prefEditor.putString(tableAx.key, tableAx.name);
+                            prefEditor.apply();
                             updateAxisName();
 
                             dialog.dismiss();
@@ -179,20 +196,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateAxisName() {
-        row1_table.setText(row1.name);
-        row2_table.setText(row2.name);
-        col1_table.setText(col1.name);
-        col2_table.setText(col2.name);
+        row1_table.setText(sharedPref.getString(row1.key, "Row 1"));
+        row2_table.setText(sharedPref.getString(row2.key, "Row 2"));
+        col1_table.setText(sharedPref.getString(col1.key, "Column 1"));
+        col2_table.setText(sharedPref.getString(col2.key, "Column 2"));
 
-        row1_percent.setText(row1.name);
+        row1_percent.setText(sharedPref.getString(row1.key, "Row 1"));
 
-        col1_percent.setText(col1.name);
-        col2_percent.setText(col2.name);
+        col1_percent.setText(sharedPref.getString(col1.key, "Column 1"));
+        col2_percent.setText(sharedPref.getString(col2.key, "Column 2"));
 
-        prefEditor.putString("row1_name", row1.name);
-        prefEditor.putString("row2_name", row2.name);
-        prefEditor.putString("col1_name", col1.name);
-        prefEditor.putString("col2_name", col2.name);
     }
 
     public void openSettings(View view) {
