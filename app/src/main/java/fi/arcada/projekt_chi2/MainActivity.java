@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
         btn3.setText(String.valueOf((int) val3));
         btn4.setText(String.valueOf((int) val4));
 
-        col1_percent.setText(String.format("%s: %.2f%%", col1.name, column1pos));
-        col2_percent.setText(String.format("%s: %.2f%%", col2.name, column2pos));
+        updateAxisName();
     }
 
     /**
@@ -247,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
         row1_percent.setText(sharedPref.getString(row1.key, "Row 1"));
 
-        col1_percent.setText(sharedPref.getString(col1.key, "Column 1"));
-        col2_percent.setText(sharedPref.getString(col2.key, "Column 2"));
+        col1_percent.setText(String.format("%s: %.2f%%", col1.name, column1pos));
+        col2_percent.setText(String.format("%s: %.2f%%", col2.name, column2pos));
 
     }
 
