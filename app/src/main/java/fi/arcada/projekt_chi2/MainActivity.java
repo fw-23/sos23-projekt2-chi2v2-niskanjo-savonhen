@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Deklarera 4 Button-objekt
 
-    Button btn1, btn2, btn3, btn4, btn6;
+    Button btn1, btn2, btn3, btn4;
     //text view
     TextView displayNumber;
     TextView displayText;
@@ -40,7 +40,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Deklarera 4 heltalsvariabler för knapparnas värden
     double val1, val2, val3, val4;
+
+    // Signifikansnivå
     double siglvl;
+
+    // Procentuella andelen jakande svar
+    double column1pos, column2pos;
 
     TextView row1_table, row2_table, col1_table, col2_table, row1_percent, col1_percent, col2_percent;
 
@@ -59,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
 
-        //calc button
-        btn6 = findViewById(R.id.button6);
 
         //display text and numbers
         displayNumber = findViewById(R.id.displayNumber);
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         siglvl = Double.parseDouble(sharedPref.getString("sigPref", "0.05"));
 
 
-        updateValues();
+
 
         row1 = new DataTableAxis();
         row1.key = "row1";
@@ -115,12 +118,10 @@ public class MainActivity extends AppCompatActivity {
         row1_percent.setText(row1.name);
 
         col1_percent = findViewById(R.id.percentCol1);
-        col1_percent.setText(col1.name);
-
         col2_percent = findViewById(R.id.percentCol2);
-        col2_percent.setText(col2.name);
 
 
+        updateValues();
 
     }
 
@@ -131,10 +132,13 @@ public class MainActivity extends AppCompatActivity {
         val3 = sharedPref.getInt("val3", 0);
         val4 = sharedPref.getInt("val4", 0);
 
-        btn1.setText(String.valueOf(val1));
-        btn2.setText(String.valueOf(val2));
-        btn3.setText(String.valueOf(val3));
-        btn4.setText(String.valueOf(val4));
+        btn1.setText(String.valueOf((int) val1));
+        btn2.setText(String.valueOf((int) val2));
+        btn3.setText(String.valueOf((int) val3));
+        btn4.setText(String.valueOf((int) val4));
+
+        col1_percent.setText(String.format("%s: %.2f%%", col1.name, column1pos));
+        col2_percent.setText(String.format("%s: %.2f%%", col2.name, column2pos));
     }
 
     /**
@@ -256,6 +260,12 @@ public class MainActivity extends AppCompatActivity {
 
         prefEditor.apply();
 
+        column1pos = 0;
+        column2pos = 0;
+
+        displayNumber.setText("");
+        displayText.setText("");
+
         updateValues();
     }
 
@@ -265,10 +275,10 @@ public class MainActivity extends AppCompatActivity {
     public void calculate() {
 
         // Uppdatera knapparna med de nuvarande värdena
-        btn1.setText(String.valueOf(val1));
-        btn2.setText(String.valueOf(val2));
-        btn3.setText(String.valueOf(val3));
-        btn4.setText(String.valueOf(val4));
+        btn1.setText(String.valueOf((int) val1));
+        btn2.setText(String.valueOf((int) val2));
+        btn3.setText(String.valueOf((int) val3));
+        btn4.setText(String.valueOf((int) val4));
 
         // Mata in värdena i Chi-2-uträkningen och ta emot resultatet
 
@@ -279,17 +289,15 @@ public class MainActivity extends AppCompatActivity {
         double pValue = Significance.getP(chi2);
 
         //procentuella jakande
-        double column1pos = (val1 / (val1+val3)*100);
-        double column2pos = (val2 / (val2+val4)*100);
+        column1pos = (val1 / (val1+val3)*100);
+        column2pos = (val2 / (val2+val4)*100);
 
 
         //skriver ut resultat
-        displayNumber.setText(String.format("RESULTAT: \n\nChi-2: %.2f\nP-värde: %.2f\nSignifikansnivå: %.2f\n\nVänstra kolumnen positiva svar: %.2f%%\nHögra kolumnen positiva svar: %.2f%%",
+        displayNumber.setText(String.format("RESULTAT: \n\nChi-2: %.2f\nP-värde: %.2f\nSignifikansnivå: %.2f\n",
                 Significance.chiSquared(val1, val2, val3, val4),
                 pValue,
-                siglvl,
-                column1pos,
-                column2pos
+                siglvl
                 ));
 
         if(pValue > siglvl){
@@ -303,6 +311,8 @@ public class MainActivity extends AppCompatActivity {
                     pValue,
                     siglvl));
         }
+
+        updateValues();
     }
 
     public void openSettings (View view) {
