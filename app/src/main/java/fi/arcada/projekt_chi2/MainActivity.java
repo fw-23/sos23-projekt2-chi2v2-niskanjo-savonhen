@@ -23,8 +23,6 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor prefEditor;
     // Deklarera 4 Button-objekt
 
     Button btn1, btn2, btn3, btn4, btn6;
@@ -79,22 +77,22 @@ public class MainActivity extends AppCompatActivity {
         updateValues();
 
         row1 = new DataTableAxis();
-        row1.key = "row1_name";
+        row1.key = "row1";
         row1.name = sharedPref.getString(row1.key, "Row 1");
         row1.id = R.id.textViewRow1;
 
         row2 = new DataTableAxis();
-        row2.key = "row2_name";
+        row2.key = "row2";
         row2.name = sharedPref.getString(row2.key, "Row 2");
         row2.id = R.id.textViewRow2;
 
         col1 = new DataTableAxis();
-        col1.key = "col1_name";
+        col1.key = "col1";
         col1.name = sharedPref.getString(col1.key, "Column 1");
         col1.id = R.id.textViewCol1;
 
         col2 = new DataTableAxis();
-        col2.key = "col2_name";
+        col2.key = "col2";
         col2.name = sharedPref.getString(col2.key,"Column 2");
         col2.id = R.id.textViewCol2;
 
@@ -152,19 +150,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.button1) {
             val1++;
-            prefEditor.putInt("val1", val1);
+            prefEditor.putInt("val1", (int) val1);
         }
         if (view.getId() == R.id.button2) {
             val2++;
-            prefEditor.putInt("val2", val2);
+            prefEditor.putInt("val2", (int) val2);
         }
         if (view.getId() == R.id.button3) {
             val3++;
-            prefEditor.putInt("val3", val3);
+            prefEditor.putInt("val3", (int) val3);
         }
         if (view.getId() == R.id.button4) {
             val4++;
-            prefEditor.putInt("val4", val4);
+            prefEditor.putInt("val4", (int) val4);
         }
 
 
@@ -259,11 +257,6 @@ public class MainActivity extends AppCompatActivity {
         prefEditor.apply();
 
         updateValues();
-    }
-
-    public void openSettings(View view) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
     }
 
     /**

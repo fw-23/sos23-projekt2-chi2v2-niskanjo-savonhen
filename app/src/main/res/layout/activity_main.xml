@@ -103,13 +103,13 @@
 
     </TableLayout>
 
-    
 
     <TextView
         android:id="@+id/displayNumber"
         android:layout_width="210dp"
         android:layout_height="254dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="132dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tableLayout"
@@ -119,7 +119,8 @@
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="8dp"
         android:onClick="buttonClick"
         android:text="Calc"
         app:layout_constraintEnd_toEndOf="@+id/tableLayout"
@@ -139,14 +140,15 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginBottom="44dp"
         android:clickable="true"
         android:onClick="openSettings"
-        app:layout_constraintStart_toStartOf="@+id/button6"
-        app:layout_constraintTop_toBottomOf="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReset"
+        app:layout_constraintEnd_toEndOf="@+id/buttonReset"
+        app:layout_constraintStart_toStartOf="@+id/buttonReset"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
-     <TextView
+    <TextView
         android:id="@+id/percentRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
