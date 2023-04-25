@@ -29,8 +29,8 @@
         <EditTextPreference
             app:key="sigPref"
             app:title="Signifikansnivå"
-            app:useSimpleSummaryProvider="true" />
 
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

@@ -25,14 +25,19 @@
                 android:layout_column="1"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
-                android:text="men" />
+
+                android:onClick="editDataAxis"
+                android:text="textViewCol1" />
+
 
             <TextView
                 android:id="@+id/textViewCol2"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
-                android:text="wemen" />
+
+                android:onClick="editDataAxis"
+                android:text="textViewCol2" />
 
         </TableRow>
 
@@ -44,7 +49,10 @@
                 android:id="@+id/textViewRow1"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="4dp"
-                android:text="yes" />
+
+                android:onClick="editDataAxis"
+                android:text="textViewRow1" />
+
 
             <Button
                 android:id="@+id/button1"
@@ -72,7 +80,9 @@
                 android:id="@+id/textViewRow2"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="4dp"
-                android:text="no" />
+                android:onClick="editDataAxis"
+                android:text="textViewRow2" />
+
 
             <Button
                 android:id="@+id/button3"
@@ -92,6 +102,8 @@
         </TableRow>
 
     </TableLayout>
+
+    
 
     <TextView
         android:id="@+id/displayNumber"
@@ -133,4 +145,46 @@
         app:layout_constraintStart_toStartOf="@+id/button6"
         app:layout_constraintTop_toBottomOf="@+id/button6"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+     <TextView
+        android:id="@+id/percentRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="percentRow1"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TextView
+        android:id="@+id/percentCol1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="percentCol1"
+        app:layout_constraintBottom_toBottomOf="@+id/percentRow1"
+        app:layout_constraintStart_toEndOf="@+id/percentRow1"
+        app:layout_constraintTop_toTopOf="@+id/percentRow1" />
+
+    <TextView
+        android:id="@+id/percentCol2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="percentCol2"
+        app:layout_constraintBottom_toBottomOf="@+id/percentCol1"
+        app:layout_constraintStart_toEndOf="@+id/percentCol1"
+        app:layout_constraintTop_toTopOf="@+id/percentCol1" />
+
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="60dp"
+        android:onClick="resetValues"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
