@@ -2,16 +2,34 @@ package fi.arcada.projekt_chi2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor prefEditor;
     // Deklarera 4 Button-objekt
     Button btn1, btn2, btn3, btn4;
+    // Column/row names and ID
+    DataTableAxis row1, row2, col1, col2;
+    DataTableAxis[] tableAxes;
     // Deklarera 4 heltalsvariabler för knapparnas värden
     int val1, val2, val3, val4;
+
+    TextView row1_table, row2_table, col1_table, col2_table, row1_percent, col1_percent, col2_percent;
 
 
     @Override
@@ -19,13 +37,75 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefEditor = sharedPref.edit();
+
         // Koppla samman Button-objekten med knapparna i layouten
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
 
+        updateValues();
 
+        row1 = new DataTableAxis();
+        row1.key = "row1_name";
+        row1.name = sharedPref.getString(row1.key, "Row 1");
+        row1.id = R.id.textViewRow1;
+
+        row2 = new DataTableAxis();
+        row2.key = "row2_name";
+        row2.name = sharedPref.getString(row2.key, "Row 2");
+        row2.id = R.id.textViewRow2;
+
+        col1 = new DataTableAxis();
+        col1.key = "col1_name";
+        col1.name = sharedPref.getString(col1.key, "Column 1");
+        col1.id = R.id.textViewCol1;
+
+        col2 = new DataTableAxis();
+        col2.key = "col2_name";
+        col2.name = sharedPref.getString(col2.key,"Column 2");
+        col2.id = R.id.textViewCol2;
+
+        tableAxes = new DataTableAxis[]{row1, row2, col1, col2};
+
+        row1_table = findViewById(row1.id);
+        row1_table.setText(row1.name);
+
+        row2_table = findViewById(row2.id);
+        row2_table.setText(row2.name);
+
+        col1_table = findViewById(col1.id);
+        col1_table.setText(col1.name);
+
+        col2_table = findViewById(col2.id);
+        col2_table.setText(col2.name);
+
+        row1_percent = findViewById(R.id.percentRow1);
+        row1_percent.setText(row1.name);
+
+        col1_percent = findViewById(R.id.percentCol1);
+        col1_percent.setText(col1.name);
+
+        col2_percent = findViewById(R.id.percentCol2);
+        col2_percent.setText(col2.name);
+
+
+
+    }
+
+    // Update values
+    public void updateValues() {
+        val1 = sharedPref.getInt("val1", 0);
+        val2 = sharedPref.getInt("val2", 0);
+        val3 = sharedPref.getInt("val3", 0);
+        val4 = sharedPref.getInt("val4", 0);
+
+        btn1.setText(String.valueOf(val1));
+        btn2.setText(String.valueOf(val2));
+        btn3.setText(String.valueOf(val3));
+        btn4.setText(String.valueOf(val4));
     }
 
     /**
@@ -38,13 +118,118 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button) view;
 
         // Kontrollera vilken knapp som klickats, öka värde på rätt vaiabel
-        if (view.getId() == R.id.button1) val1++;
-        if (view.getId() == R.id.button2) val2++;
-        if (view.getId() == R.id.button3) val3++;
-        if (view.getId() == R.id.button4) val4++;
+        if (view.getId() == R.id.button1) {
+            val1++;
+            prefEditor.putInt("val1", val1);
+        }
+        if (view.getId() == R.id.button2) {
+            val2++;
+            prefEditor.putInt("val2", val2);
+        }
+        if (view.getId() == R.id.button3) {
+            val3++;
+            prefEditor.putInt("val3", val3);
+        }
+        if (view.getId() == R.id.button4) {
+            val4++;
+            prefEditor.putInt("val4", val4);
+        }
 
+        prefEditor.apply();
         // Slutligen, kör metoden som ska räkna ut allt!
         calculate();
+    }
+
+
+    // Edit columns from MainActivity
+    public void editDataAxis(View view) {
+        // Create local axis object
+        DataTableAxis axis = new DataTableAxis();
+        axis.id = view.getId();
+        final TextView axis_name = (TextView) findViewById(axis.id);
+        axis.name = axis_name.getText().toString();
+
+        // Set dialog view
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        // Inflate dialog_edit_text.xml
+        View dialogView = inflater.inflate(R.layout.dialog_edit_text, null);
+        builder.setView(dialogView);
+
+        final EditText input = dialogView.findViewById(R.id.dialog_edit_text);
+        input.setText(axis.name);
+
+
+        final AlertDialog dialog = builder.create();
+
+        View cancelButton = (Button) dialogView.findViewById(R.id.buttonCancelDialog);
+        View saveButton = (Button) dialogView.findViewById(R.id.buttonSaveAxisName);
+
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        DataTableAxis finalAxis = axis;
+        if (saveButton != null) {
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Update global tableAxes array
+                    finalAxis.name = input.getText().toString();
+                    for (DataTableAxis tableAx : tableAxes) {
+                        if (tableAx.id == finalAxis.id) {
+                            tableAx.name = finalAxis.name;
+                            prefEditor.putString(tableAx.key, tableAx.name);
+                            prefEditor.apply();
+                            updateAxisName();
+
+                            dialog.dismiss();
+                            break;
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            });
+        }
+
+
+        dialog.show();
+    }
+
+    // Update text views
+    public void updateAxisName() {
+        row1_table.setText(sharedPref.getString(row1.key, "Row 1"));
+        row2_table.setText(sharedPref.getString(row2.key, "Row 2"));
+        col1_table.setText(sharedPref.getString(col1.key, "Column 1"));
+        col2_table.setText(sharedPref.getString(col2.key, "Column 2"));
+
+        row1_percent.setText(sharedPref.getString(row1.key, "Row 1"));
+
+        col1_percent.setText(sharedPref.getString(col1.key, "Column 1"));
+        col2_percent.setText(sharedPref.getString(col2.key, "Column 2"));
+
+    }
+
+    public void resetValues(View view) {
+        prefEditor.putInt("val1", 0);
+        prefEditor.putInt("val2", 0);
+        prefEditor.putInt("val3", 0);
+        prefEditor.putInt("val4", 0);
+
+        prefEditor.apply();
+
+        updateValues();
+    }
+
+    public void openSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     /**
