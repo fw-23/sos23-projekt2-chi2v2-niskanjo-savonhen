@@ -2,12 +2,15 @@ package fi.arcada.projekt_chi2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,17 +20,29 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor prefEditor;
     // Deklarera 4 Button-objekt
-    Button btn1, btn2, btn3, btn4;
+
+    Button btn1, btn2, btn3, btn4, btn6;
+    //text view
+    TextView displayNumber;
+    TextView displayText;
+
     // Column/row names and ID
     DataTableAxis row1, row2, col1, col2;
     DataTableAxis[] tableAxes;
+  
+    //SETTINGS
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor prefEditor;
+
     // Deklarera 4 heltalsvariabler för knapparnas värden
-    int val1, val2, val3, val4;
+    double val1, val2, val3, val4;
+    double siglvl;
 
     TextView row1_table, row2_table, col1_table, col2_table, row1_percent, col1_percent, col2_percent;
 
@@ -45,6 +60,21 @@ public class MainActivity extends AppCompatActivity {
         btn2 = findViewById(R.id.button2);
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
+
+        //calc button
+        btn6 = findViewById(R.id.button6);
+
+        //display text and numbers
+        displayNumber = findViewById(R.id.displayNumber);
+        displayText = findViewById(R.id.displayText);
+
+        //prefrences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefEditor = sharedPref.edit();
+        
+        //signifikansnivå i prefs
+        siglvl = Double.parseDouble(sharedPref.getString("sigPref", "0.05"));
+
 
         updateValues();
 
@@ -82,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         col2_table = findViewById(col2.id);
         col2_table.setText(col2.name);
 
+
         row1_percent = findViewById(R.id.percentRow1);
         row1_percent.setText(row1.name);
 
@@ -118,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button) view;
 
         // Kontrollera vilken knapp som klickats, öka värde på rätt vaiabel
+
         if (view.getId() == R.id.button1) {
             val1++;
             prefEditor.putInt("val1", val1);
@@ -135,9 +167,11 @@ public class MainActivity extends AppCompatActivity {
             prefEditor.putInt("val4", val4);
         }
 
+
         prefEditor.apply();
         // Slutligen, kör metoden som ska räkna ut allt!
         calculate();
+
     }
 
 
@@ -244,22 +278,43 @@ public class MainActivity extends AppCompatActivity {
         btn4.setText(String.valueOf(val4));
 
         // Mata in värdena i Chi-2-uträkningen och ta emot resultatet
+
         // i en Double-variabel
         double chi2 = Significance.chiSquared(val1, val2, val3, val4);
 
         // Mata in chi2-resultatet i getP() och ta emot p-värdet
         double pValue = Significance.getP(chi2);
 
-        /**
-         *  - Visa chi2 och pValue åt användaren på ett bra och tydligt sätt!
-         *
-         *  - Visa procentuella andelen jakande svar inom de olika grupperna.
-         *    T.ex. (val1 / (val1+val3) * 100) och (val2 / (val2+val4) * 100
-         *
-         *  - Analysera signifikansen genom att jämföra p-värdet
-         *    med signifikansnivån, visa reultatet åt användaren
-         *
-         */
+        //procentuella jakande
+        double column1pos = (val1 / (val1+val3)*100);
+        double column2pos = (val2 / (val2+val4)*100);
+
+
+        //skriver ut resultat
+        displayNumber.setText(String.format("RESULTAT: \n\nChi-2: %.2f\nP-värde: %.2f\nSignifikansnivå: %.2f\n\nVänstra kolumnen positiva svar: %.2f%%\nHögra kolumnen positiva svar: %.2f%%",
+                Significance.chiSquared(val1, val2, val3, val4),
+                pValue,
+                siglvl,
+                column1pos,
+                column2pos
+                ));
+
+        if(pValue > siglvl){
+
+            displayText.setText(String.format("Eftersom p-värdet %.2f > %.2f betyder det att sannolikheten är hög för att nollhypotesen är sann.",
+                    pValue,
+                    siglvl));
+        }
+        if(pValue < siglvl){
+            displayText.setText(String.format("Eftersom p-värdet %.2f < %.2f betyder det att sannolikheten är låg för att nollhypotesen är sann.",
+                    pValue,
+                    siglvl));
+        }
+    }
+
+    public void openSettings (View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
 
     }
 

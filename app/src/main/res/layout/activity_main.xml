@@ -25,14 +25,17 @@
                 android:layout_column="1"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
+
                 android:onClick="editDataAxis"
                 android:text="textViewCol1" />
+
 
             <TextView
                 android:id="@+id/textViewCol2"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
+
                 android:onClick="editDataAxis"
                 android:text="textViewCol2" />
 
@@ -46,8 +49,10 @@
                 android:id="@+id/textViewRow1"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="4dp"
+
                 android:onClick="editDataAxis"
                 android:text="textViewRow1" />
+
 
             <Button
                 android:id="@+id/button1"
@@ -78,6 +83,7 @@
                 android:onClick="editDataAxis"
                 android:text="textViewRow2" />
 
+
             <Button
                 android:id="@+id/button3"
                 android:layout_width="100dp"
@@ -97,7 +103,50 @@
 
     </TableLayout>
 
+    
+
     <TextView
+        android:id="@+id/displayNumber"
+        android:layout_width="210dp"
+        android:layout_height="254dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:onClick="buttonClick"
+        android:text="Calc"
+        app:layout_constraintEnd_toEndOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TextView
+        android:id="@+id/displayText"
+        android:layout_width="215dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/displayNumber"
+        app:layout_constraintTop_toBottomOf="@+id/displayNumber" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:clickable="true"
+        android:onClick="openSettings"
+        app:layout_constraintStart_toStartOf="@+id/button6"
+        app:layout_constraintTop_toBottomOf="@+id/button6"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+     <TextView
         android:id="@+id/percentRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="percentCol2"
+        android:text="percentCol1"
         app:layout_constraintBottom_toBottomOf="@+id/percentRow1"
         app:layout_constraintStart_toEndOf="@+id/percentRow1"
         app:layout_constraintTop_toTopOf="@+id/percentRow1" />
@@ -126,16 +175,6 @@
         app:layout_constraintStart_toEndOf="@+id/percentCol1"
         app:layout_constraintTop_toTopOf="@+id/percentCol1" />
 
-    <ImageButton
-        android:id="@+id/buttonSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="openSettings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_manage" />
 
     <Button
         android:id="@+id/buttonReset"
@@ -147,4 +186,5 @@
         android:text="Reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
