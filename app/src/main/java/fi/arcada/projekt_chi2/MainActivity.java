@@ -46,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
 
-        val1 = sharedPref.getInt("val1", 0);
-        val2 = sharedPref.getInt("val2", 0);
-        val3 = sharedPref.getInt("val3", 0);
-        val4 = sharedPref.getInt("val4", 0);
+        updateValues();
 
         row1 = new DataTableAxis();
         row1.key = "row1_name";
@@ -94,11 +91,21 @@ public class MainActivity extends AppCompatActivity {
         col2_percent = findViewById(R.id.percentCol2);
         col2_percent.setText(col2.name);
 
+
+
+    }
+
+    // Update values
+    public void updateValues() {
+        val1 = sharedPref.getInt("val1", 0);
+        val2 = sharedPref.getInt("val2", 0);
+        val3 = sharedPref.getInt("val3", 0);
+        val4 = sharedPref.getInt("val4", 0);
+
         btn1.setText(String.valueOf(val1));
         btn2.setText(String.valueOf(val2));
         btn3.setText(String.valueOf(val3));
         btn4.setText(String.valueOf(val4));
-
     }
 
     /**
@@ -133,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         calculate();
     }
 
+
+    // Edit columns from MainActivity
     public void editDataAxis(View view) {
         // Create local axis object
         DataTableAxis axis = new DataTableAxis();
@@ -144,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        // Inflate the dialog_edit_text.xml layout file
+        // Inflate dialog_edit_text.xml
         View dialogView = inflater.inflate(R.layout.dialog_edit_text, null);
         builder.setView(dialogView);
 
@@ -165,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
 
         DataTableAxis finalAxis = axis;
         if (saveButton != null) {
@@ -195,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Update text views
     public void updateAxisName() {
         row1_table.setText(sharedPref.getString(row1.key, "Row 1"));
         row2_table.setText(sharedPref.getString(row2.key, "Row 2"));
@@ -206,6 +214,17 @@ public class MainActivity extends AppCompatActivity {
         col1_percent.setText(sharedPref.getString(col1.key, "Column 1"));
         col2_percent.setText(sharedPref.getString(col2.key, "Column 2"));
 
+    }
+
+    public void resetValues(View view) {
+        prefEditor.putInt("val1", 0);
+        prefEditor.putInt("val2", 0);
+        prefEditor.putInt("val3", 0);
+        prefEditor.putInt("val4", 0);
+
+        prefEditor.apply();
+
+        updateValues();
     }
 
     public void openSettings(View view) {
