@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -24,13 +25,18 @@
                 android:layout_column="1"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
+
+                android:onClick="editDataAxis"
                 android:text="textViewCol1" />
+
 
             <TextView
                 android:id="@+id/textViewCol2"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="4dp"
+
+                android:onClick="editDataAxis"
                 android:text="textViewCol2" />
 
         </TableRow>
@@ -43,7 +49,10 @@
                 android:id="@+id/textViewRow1"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="4dp"
+
+                android:onClick="editDataAxis"
                 android:text="textViewRow1" />
+
 
             <Button
                 android:id="@+id/button1"
@@ -71,7 +80,9 @@
                 android:id="@+id/textViewRow2"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="4dp"
+                android:onClick="editDataAxis"
                 android:text="textViewRow2" />
+
 
             <Button
                 android:id="@+id/button3"
@@ -91,4 +102,80 @@
         </TableRow>
 
     </TableLayout>
+
+
+    <TextView
+        android:id="@+id/displayNumber"
+        android:layout_width="210dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="152dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TextView
+        android:id="@+id/displayText"
+        android:layout_width="215dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/displayNumber"
+        app:layout_constraintTop_toBottomOf="@+id/displayNumber" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:clickable="true"
+        android:onClick="openSettings"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReset"
+        app:layout_constraintEnd_toEndOf="@+id/buttonReset"
+        app:layout_constraintStart_toStartOf="@+id/buttonReset"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+    <TextView
+        android:id="@+id/percentRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="percentRow1"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TextView
+        android:id="@+id/percentCol1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="percentCol1"
+        app:layout_constraintBottom_toBottomOf="@+id/percentRow1"
+        app:layout_constraintStart_toEndOf="@+id/percentRow1"
+        app:layout_constraintTop_toTopOf="@+id/percentRow1" />
+
+    <TextView
+        android:id="@+id/percentCol2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="percentCol2"
+        app:layout_constraintBottom_toBottomOf="@+id/percentCol1"
+        app:layout_constraintStart_toEndOf="@+id/percentCol1"
+        app:layout_constraintTop_toTopOf="@+id/percentCol1" />
+
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="60dp"
+        android:onClick="resetValues"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
